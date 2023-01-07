@@ -1,0 +1,68 @@
+{
+	"configurations": [
+		{
+			"name": "Start openui5-basic-template-app",
+			"type": "node",
+			"request": "launch",
+			"runtimeExecutable": "npx",
+			"cwd": "${workspaceFolder}/openui5-basic-template-app",
+			"windows": {
+				"runtimeExecutable": "npx.cmd"
+			},
+			"runtimeArgs": ["fiori", "run"],
+			"args": ["--open", "test/flpSandbox.html#app-tile"],
+			"console": "internalConsole",
+			"internalConsoleOptions": "openOnSessionStart",
+			"outputCapture": "std",
+			"port": 9229,
+			"env": {
+				"DEBUG": "--inspect",
+				"FIORI_TOOLS_URL_PARAMS": "sap-client=100&sap-ui-xx-viewCache=false"
+			}
+		},
+		{
+			"name": "Start openui5-basic-template-app Mock",
+			"type": "node",
+			"request": "launch",
+			"cwd": "${workspaceFolder}/openui5-basic-template-app",
+			"runtimeExecutable": "npx",
+			"windows": {
+				"runtimeExecutable": "npx.cmd"
+			},
+			"runtimeArgs": ["fiori", "run"],
+			"args": ["--open", "test/flpSandboxMockServer.html#app-tile"],
+			"console": "internalConsole",
+			"internalConsoleOptions": "openOnSessionStart",
+			"outputCapture": "std",
+			"port": 9229,
+			"env": {
+				"FIORI_TOOLS_URL_PARAMS": "sap-client=100&sap-ui-xx-viewCache=false"
+			}
+		},
+		{
+			"name": "Start openui5-basic-template-app Local",
+			"type": "node",
+			"request": "launch",
+			"cwd": "${workspaceFolder}/openui5-basic-template-app",
+			"runtimeExecutable": "npx",
+			"windows": {
+				"runtimeExecutable": "npx.cmd"
+			},
+			"runtimeArgs": ["fiori", "run"],
+			"args": [
+				"--config",
+				"./ui5-local.yaml",
+				"--open",
+				"test/flpSandbox.html#app-tile"
+			],
+			"console": "internalConsole",
+			"internalConsoleOptions": "openOnSessionStart",
+			"outputCapture": "std",
+			"port": 9229,
+			"env": {
+				"FIORI_TOOLS_URL_PARAMS": "sap-client=100&sap-ui-xx-viewCache=false"
+			}
+		}
+	],
+	"compounds": []
+}
