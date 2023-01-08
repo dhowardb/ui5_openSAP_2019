@@ -1,0 +1,15 @@
+{
+  "generator-ui5-ts-app": {
+    "application": "myapp",
+    "namespace": "com.myorg",
+    "framework": "OpenUI5",
+    "frameworkVersion": "1.96.4",
+    "author": "dhowardb",
+    "initrepo": false,
+    "tstypes": "@openui5/ts-types-esm",
+    "tstypesVersion": "1.96.4",
+    "appId": "com.myorg.myapp",
+    "appURI": "com/myorg/myapp",
+    "setupCompleted": true
+  }
+}
