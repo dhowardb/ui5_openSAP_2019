@@ -1,0 +1,36 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" controllerName="com.myorg.myapp.controller.Detail" displayBlock="true" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc">
+    <Page
+        title="{movies>cinemaName} - { 
+        path: 'movies>startDate',
+        type: 'sap.ui.model.type.Date',
+        formatOptions: {
+            source: {
+                pattern: 'MM/dd/yyyy/hh:mm:ss'
+            },
+            relative: true,
+            relativeScale: 'auto'
+        }
+     }"
+        showNavButton="true"
+        class="sapUiResponsiveContentPadding"
+        navButtonPress=".onNavBack"
+    >
+        <content>
+            <FlexBox wrap="Wrap">
+                <layout:VerticalLayout id="generalDetails" class="sapUiMeduimMarginEnd sapUiSmallMarginBottom">
+                    <core:Icon src="{movies>Icon}" size="3rem" class="sapUiMediumMarginBottom" />
+                    <Label text="{i18n>cinemaAddress}" design="Bold" />
+                    <Text text="{movies>cinemaAddress}" class="sapUiMediumMarginBottom" />
+
+                    <Label text="{i18n>special}" design="Bold" />
+                    <Text text="{movies>special}" class="sapUiMediumMarginBottom" />
+                    <Label text="{i18n>seats}" design="Bold" />
+                    <Text text="{movies>seats}" class="sapUiMediumMarginBottom" />
+                    <Label text="{i18n>technicalDetails}" design="Bold" />
+                    <Text text="{movies>technicalDetails}" width="400px" />
+                </layout:VerticalLayout>
+                <Image width="100%" src="{movies>pic}" />
+            </FlexBox>
+        </content>
+    </Page>
+</mvc:View>
