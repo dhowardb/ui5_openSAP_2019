@@ -35,7 +35,7 @@ export default class Detail extends BaseController {
 		const path = elementBinding.getPath();
 
 		if (!view.getModel('movies').getObject(path)) {
-			void this.getRouter().getTargets().display('NotFound');
+			void this.getRouter().getTargets().display('PageNotFound');
 		}
 	}
 }

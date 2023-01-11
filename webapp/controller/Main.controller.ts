@@ -14,6 +14,10 @@ import JSONListBinding from 'sap/ui/model/json/JSONListBinding';
 export default class Main extends BaseController {
 	private formatter = formatter;
 
+	public onInit(): void {
+		const view = this.getView().getBindingContext();
+		console.log(view);
+	}
 	public sayHello(): void {
 		MessageBox.show('Hello World!');
 	}

@@ -1,4 +1,4 @@
-import Log from 'sap/base/Log';
+// import Log from 'sap/base/Log';	//for debug only causes app to become slow
 import BaseController from './BaseController';
 
 /**
@@ -10,17 +10,17 @@ export default class App extends BaseController {
 		this.getView().addStyleClass(
 			this.getOwnerComponent().getContentDensityClass()
 		);
-		Log.info('Controller has been initialized!');
+		// Log.info('Controller has been initialized!');
 	}
 
 	public onBeforeRendering(): void {
-		Log.info('The view will be shortly rendered!');
+		// Log.info('The view will be shortly rendered!');
 	}
 
 	public onAfterRendering(): void {
-		Log.info('The view has been rendered!');
+		// Log.info('The view has been rendered!');
 	}
 	public onExit(): void {
-		Log.info('Controller will be shortly destroyed!');
+		// Log.info('Controller will be shortly destroyed!');
 	}
 }

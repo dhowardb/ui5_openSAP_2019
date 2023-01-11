@@ -1,13 +1,8 @@
-<mvc:View
-	controllerName="com.myorg.myapp.controller.App"
-	displayBlock="true"
-	xmlns="sap.m"
-	xmlns:mvc="sap.ui.core.mvc">
-
-	<!-- <Shell >
+<mvc:View controllerName="com.myorg.myapp.controller.App" displayBlock="true" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc">
+    <!-- <Shell >
 	  <App id="app" busy="{appView>/busy}" busyIndicatorDelay="{appView>/delay}" />
 	</Shell> -->
-	<Shell id="_IDGenShell1">
+    <Shell id="_IDGenShell1">
         <App id="app" busy="{appView>/busy}" busyIndicatorDelay="{appView>/delay}" />
     </Shell>
 </mvc:View>

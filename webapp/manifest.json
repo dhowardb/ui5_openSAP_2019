@@ -60,6 +60,19 @@
 			}
 		},
 
+		"resources": {
+			"css": [
+				{
+					"id": "extendCSS",
+					"uri": "css/extend.css"
+				},
+				{
+					"id": "customCSS",
+					"uri": "css/custom.css"
+				}
+			]
+		},
+
 		"routing": {
 			"config": {
 				"routerClass": "sap.m.routing.Router",
@@ -67,6 +80,9 @@
 				"viewPath": "com.myorg.myapp.view",
 				"controlId": "app",
 				"controlAggregation": "pages",
+				"bypassed": {
+					"target": "PageNotFound"
+				},
 				"async": true
 			},
 			"routes": [
@@ -79,6 +95,11 @@
 					"pattern": "movies{movieId}/appointments{appointmentsId}",
 					"name": "Detail",
 					"target": "Detail"
+				},
+				{
+					"pattern": "",
+					"name": "PageNotFound",
+					"target": "PageNotFound"
 				}
 			],
 			"targets": {
@@ -89,6 +110,10 @@
 				"Detail": {
 					"viewId": "Detail",
 					"viewName": "Detail"
+				},
+				"PageNotFound": {
+					"viewId": "PageNotFound",
+					"viewName": "PageNotFound"
 				}
 			}
 		}
