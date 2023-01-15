@@ -28,7 +28,7 @@
         "@babel/core": "^7.16.7",
         "@babel/preset-env": "^7.16.8",
         "@babel/preset-typescript": "^7.16.7",
-        "@sap/ux-ui5-tooling": "^1.4.4",
+        "@sap/ux-ui5-tooling": "^1.8.4",
         "@sapui5/ts-types-esm": "1.96.6",
         "@types/dompurify": "^2.2.1",
         "@types/qunit": "2.5.4",

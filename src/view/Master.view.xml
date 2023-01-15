@@ -1,56 +1,62 @@
-<mvc:View
-	controllerName="com.myorg.myapp.controller.Master"
-	xmlns="sap.m"
-	xmlns:f="sap.f"
-	xmlns:mvc="sap.ui.core.mvc"
-	xmlns:core="sap.ui.core">
-	<f:DynamicPage id="masterPage" 
-			stickySubheaderProvider="iconTabBar"
-			class="sapUiNoContentPadding">
-		<!-- DynamicPage Title -->
-		<f:title>
-			<f:DynamicPageTitle>
-				<f:heading>
-					<Title text="{i18n>appTitle}" level="H2"/>
-				</f:heading>
-			</f:DynamicPageTitle>
-		</f:title>
-		<f:content>
-			<Table id="productsTable"
-					inset="false"
-					items="{
+<mvc:View controllerName="com.myorg.myapp.controller.Master" xmlns="sap.m" xmlns:f="sap.f" xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core">
+    <VBox>
+        <Avatar src="{avatar>/path}" displaySize="XL" displayShape="Square" showBorder="false" press="onPress" />
+
+        <Text text="Avatar of a product with border" class="sapUiSmallMarginTop" />
+    </VBox>
+    <f:DynamicPage id="masterPage" stickySubheaderProvider="iconTabBar" class="sapUiNoContentPadding">
+        <!-- DynamicPage Title -->
+        <f:title>
+            <f:DynamicPageTitle>
+                <f:heading>
+                    <Title text="{i18n>appTitle}" level="H2" textAlign="Center" class="sapUiTinyMarginBegin" />
+                </f:heading>
+            </f:DynamicPageTitle>
+        </f:title>
+        <f:content>
+            <Table id="productsTable" inset="false" items="{
 						path: '/Products',
+                        events: { dataReceived : '.dataReceived' },
 						sorter: {
 							path: 'Name'
 						}
-					}"
-					class="sapFDynamicPageAlignContent"
-					width="auto"
-					busyIndicatorDelay="0">
-				<headerToolbar>
-					<OverflowToolbar>
-						<ToolbarSpacer/>
-						<SearchField search="onSearch" width="17.5rem"/>
-						<OverflowToolbarButton icon="sap-icon://sort" type="Transparent" press="onSort"/>
-					</OverflowToolbar>
-				</headerToolbar>
-				<columns>
-					<Column width="12em">
-						<Text text="Title" />
-					</Column>
-					<Column	hAlign="End">
-						<Text text="Other field" />
-					</Column>
-				</columns>
-				<items>
-					<ColumnListItem type="Navigation" press=".onListItemPress">
-						<cells>
-							<ObjectIdentifier title="{Name}" text="{ID}" />
-							<Text text="{Description}" />
-						</cells>
-					</ColumnListItem>
-				</items>
-			</Table>
-		</f:content>
-	</f:DynamicPage>
+					}" class="sapFDynamicPageAlignContent" width="auto" busyIndicatorDelay="0">
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <ToolbarSpacer />
+                        <SearchField search="onSearch" width="17.5rem" />
+                        <OverflowToolbarButton icon="sap-icon://sort" type="Transparent" press="onSort" />
+                    </OverflowToolbar>
+                </headerToolbar>
+                <columns>
+                    <Column width="12em">
+                        <Text id="productsTotal" text="Products {$count}" />
+                    </Column>
+                    <Column width="12em">
+                        <Text text="{i18n>masterDescription}" />
+                    </Column>
+                    <Column hAlign="End">
+                        <Text text="{i18n>masterPrice}" />
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem type="Navigation" press=".onListItemPress">
+                        <cells>
+                            <ObjectIdentifier title="{Name}" text="{ID}" />
+                            <ObjectIdentifier text="{Description}" />
+                            <ObjectNumber number="{Price}" unit="{
+                                path: 'ID',
+                                formatter: '.formatter.formatCurrency'
+                             }" />
+                            <!-- <Text text="{Description}" />
+                            <ObjectNumber id="ObjectNumberPrice" number="{Price}" unit="{
+                                path: 'ID',
+                                formatter: '.formatter.formatCurrency'
+                             }" /> -->
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </f:content>
+    </f:DynamicPage>
 </mvc:View>
