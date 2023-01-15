@@ -1,0 +1,22 @@
+{
+  "generator-ui5-ts-app-fcl": {
+    "application": "myapp",
+    "namespace": "com.myorg",
+    "endpoint": "https://services.odata.org/V2/OData/OData.svc/",
+    "entity": "Products",
+    "key": "ID",
+    "title": "Name",
+    "otherField": "Description",
+    "framework": "SAPUI5",
+    "frameworkVersion": "1.96.6",
+    "author": "",
+    "tstypes": "@sapui5/ts-types-esm",
+    "tstypesVersion": "1.96.6",
+    "appId": "com.myorg.myapp",
+    "appURI": "com/myorg/myapp",
+    "origin": "https://services.odata.org",
+    "path": "/V2/OData/OData.svc/",
+    "pathPrefix": "/V2",
+    "setupCompleted": true
+  }
+}
