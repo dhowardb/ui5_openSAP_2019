@@ -1,4 +1,4 @@
-<mvc:View controllerName="com.myorg.myapp.controller.Detail" xmlns="sap.m" xmlns:t="sap.ui.table" xmlns:f="sap.f" xmlns:form="sap.ui.layout.form" xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc">
+<mvc:View xmlns:smarttable="sap.ui.comp.smarttable" controllerName="com.myorg.myapp.controller.Detail" xmlns="sap.m" xmlns:t="sap.ui.table" xmlns:f="sap.f" xmlns:form="sap.ui.layout.form" xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc">
     <f:DynamicPage id="detailPage" showFooter="{comp>/detailEditMode}" stickySubheaderProvider="iconTabBar" class="sapUiNoContentPadding" busy="{detailView>/busy}" busyIndicatorDelay="{detailView>/delay}">
         <f:title>
             <f:DynamicPageTitle>
@@ -38,11 +38,25 @@
         <f:content>
             <IconTabBar id="iconTabBar" expanded="{device>/isNoPhone}" class="sapUiResponsiveContentPadding">
                 <items>
-                    <IconTabFilter text="Tab 1" key="tab1">
-                        <Text text="Add some content..." />
+                    <IconTabFilter text="Supplier" key="tab1">
+                        <core:Fragment fragmentName='com.myorg.myapp.Fragments.SupplierInfo' type="XML" />
                     </IconTabFilter>
-                    <IconTabFilter text="Tab 2" key="tab2">
-                        <Text text="Whatever you like" />
+                    <IconTabFilter text="Category" key="tab2">
+                        <Title text="{i18n>categoryInfo}" titleStyle="H4" class="sapUiSmallMarginTop" />
+                        <core:Fragment fragmentName='com.myorg.myapp.Fragments.CategoryInfo' type="XML" />
+                        <Button id="OpenCategories" text="Categories" press="onShowCategories" class="sapUiSmallMarginTop" />
+                        <ObjectListItem id="listItemOpenCategories" type="Active" press="onListCategoriesHandler" class="objectListBgdToNone sapUiSmallMarginTop">
+                            <ObjectAttribute id="objAttrCategoryID" title="{i18n>categoryID}" text="{
+                                path: 'Category/ID'
+                            }" />
+                            <ObjectAttribute title="{i18n>categoryName}" text="{Category/Name}" />
+                            <markers>
+                                <ObjectMarker type="{
+                                        path: 'Category/Name',
+                                        formatter: '.formatter.formatMarkers'
+                                    }" />
+                            </markers>
+                        </ObjectListItem>
                     </IconTabFilter>
                 </items>
             </IconTabBar>

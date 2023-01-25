@@ -1,0 +1,58 @@
+<mvc:View xmlns:f="sap.f" controllerName="com.myorg.myapp.controller.Third" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout">
+    <f:DynamicPage>
+        <f:title>
+            <f:DynamicPageTitle>
+                <f:heading>
+                    <Title text="Sample Text" level="Auto" />
+                </f:heading>
+                <f:navigationActions>
+                    <OverflowToolbarButton type="Transparent" icon="sap-icon://full-screen" press=".handleFullScreen" tooltip="{i18n>fullscreen}" visible="{= ${appView>/actionButtonsInfo/endColumn/fullScreen} !== null }" />
+                    <OverflowToolbarButton type="Transparent" icon="sap-icon://exit-full-screen" press=".handleExitFullScreen" tooltip="{i18n>exitFullscreen}" visible="{= ${appView>/actionButtonsInfo/endColumn/exitFullScreen} !== null }" />
+                    <OverflowToolbarButton type="Transparent" icon="sap-icon://decline" press=".handleClose" tooltip="{i18n>close}" visible="{= ${appView>/actionButtonsInfo/endColumn/closeColumn} !== null }" />
+                </f:navigationActions>
+            </f:DynamicPageTitle>
+        </f:title>
+        <f:content>
+            <!-- <Table
+                id="categoryTable"
+                inset="false"
+                items="{
+						path: '/Products',
+                        events: { dataReceived : '.dataReceived' },
+                        parameters: {
+                            expand: 'Category,Supplier'
+                        },
+						sorter: {
+							path: 'ID'
+						}
+					}"
+                class="sapFDynamicPageAlignContent"
+                width="auto"
+                busyIndicatorDelay="0"
+            >
+                <columns>
+                    <Column width="12em" demandPopin="false" minScreenWidth="Tablet">
+                        <Text text="{i18n>categoryInfo}" />
+                    </Column>
+                    <Column hAlign="End" demandPopin="true" minScreenWidth="Phone">
+                        <Text text="{i18n>categoryName}" />
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem type="Inactive">
+                        <cells>
+                            <ObjectIdentifier title="Category ID" text="{Category/ID}" />
+                            <ObjectIdentifier title="Category Name" text="{Category/Name}" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table> -->
+            <List noDataText="Drop List Items here" id="thirdList" items="{
+						path: '/Categories' }">
+                <items>
+                    <StandardListItem type="Inactive" description="{Name}" title="{ID}" />
+                </items>
+            </List>
+        </f:content>
+    </f:DynamicPage>
+</mvc:View>

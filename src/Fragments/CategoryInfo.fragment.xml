@@ -1,0 +1,14 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:form="sap.ui.layout.form">
+    <ObjectListItem type="Inactive" class="objectListBgdToNone sapUiSmallMarginTop">
+        <ObjectAttribute title="{i18n>categoryID}" text="{
+                                path: 'Category/ID'
+                            }" />
+        <ObjectAttribute title="{i18n>categoryName}" text="{Category/Name}" />
+        <markers>
+            <ObjectMarker type="{
+                                        path: 'Category/Name',
+                                        formatter: '.formatter.formatMarkers'
+                                    }" />
+        </markers>
+    </ObjectListItem>
+</core:FragmentDefinition>

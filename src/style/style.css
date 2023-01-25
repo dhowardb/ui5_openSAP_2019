@@ -1,0 +1,12 @@
+.objectListBgdToTest .sapMObjLItem {
+  background-color: transparent;
+}
+
+.objectListBgdToNone {
+  background-color: transparent;
+  /* @extend .sapMLIB .sapMObjLItem; */
+}
+
+.sapMLIB .sapMObjLItem {
+  composes: objectListBgdToNone;
+}

@@ -8,7 +8,7 @@ export default {
    */
   formatValue: (value: string) => {
     if (!value) {
-      return "";
+      return '';
     }
     try {
       return parseFloat(value).toFixed(2);
@@ -19,8 +19,15 @@ export default {
 
   formatCurrency: (value: number) => {
     if (value == 5) {
-      return "PHP";
+      return 'PHP';
     }
-    return "USD";
+    return 'USD';
+  },
+
+  formatMarkers: (value: string) => {
+    if (value != 'Electronics') {
+      return 'Favorite';
+    }
+    return 'Flagged';
   },
 };

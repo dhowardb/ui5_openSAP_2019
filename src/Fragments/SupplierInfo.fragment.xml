@@ -1,0 +1,46 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:form="sap.ui.layout.form">
+    <form:Form editable="false">
+        <form:title>
+            <core:Title text="{i18n>SupplierInfo}" />
+        </form:title>
+        <form:layout>
+            <form:ResponsiveGridLayout labelSpanXL="3" labelSpanL="3" labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false" />
+        </form:layout>
+        <form:formContainers>
+            <form:FormContainer>
+                <form:formElements>
+                    <form:FormElement label="{i18n>SupplierID}">
+                        <form:fields>
+                            <Text text="{Supplier/ID}" />
+                        </form:fields>
+                    </form:FormElement>
+                    <form:FormElement label="{i18n>SupplierName}">
+                        <form:fields>
+                            <Text text="{Supplier/Name}" />
+                        </form:fields>
+                    </form:FormElement>
+                    <form:FormElement label="{i18n>SupplierStreet}">
+                        <form:fields>
+                            <Text text="{Supplier/Address/Street}" />
+                        </form:fields>
+                    </form:FormElement>
+                    <form:FormElement label="{i18n>SupplierCity}">
+                        <form:fields>
+                            <Text text="{Supplier/Address/City}" />
+                        </form:fields>
+                    </form:FormElement>
+                    <form:FormElement label="{i18n>SupplierState}">
+                        <form:fields>
+                            <Text text="{Supplier/Address/State}" />
+                        </form:fields>
+                    </form:FormElement>
+                    <form:FormElement label="{i18n>SupplierCountry}">
+                        <form:fields>
+                            <Text text="{Supplier/Address/Country}" />
+                        </form:fields>
+                    </form:FormElement>
+                </form:formElements>
+            </form:FormContainer>
+        </form:formContainers>
+    </form:Form>
+</core:FragmentDefinition>
