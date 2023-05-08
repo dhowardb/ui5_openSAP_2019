@@ -11,81 +11,110 @@ import FilterOperator from 'sap/ui/model/FilterOperator';
 import Sorter from 'sap/ui/model/Sorter';
 import Text from 'sap/m/Text';
 import formatter from '../model/formatter';
+import Table from 'sap/m/Table';
+import Button from 'sap/m/Button';
 
 /**
  * @namespace com.myorg.myapp.controller
  */
 
 interface UI5Data {
-  getParameter(name: 'data'): { results: string };
+	getParameter(name: 'data'): { results: string };
 }
 
 export default class Master extends BaseController {
-  private descendingSort = false;
-  private formatter = formatter;
+	private descendingSort = false;
+	private formatter = formatter;
 
-  private onMasterMatched() {
-    (this.getModel('appView') as JSONModel).setProperty('/layout', 'OneColumn');
-  }
+	public onInit(): void {
+		this.setStickyProperties();
+	}
 
-  private async onListItemPress(event: UI5Event): Promise<void> {
-    const replace = !system.phone,
-      id = (event.getSource() as CustomListItem)
-        .getBindingContext()
-        .getProperty('ID') as number,
-      helper = await (this.getOwnerComponent() as Component).getHelper(),
-      nextUIState = helper.getNextUIState(1) as UIState;
-    this.getRouter().navTo(
-      'detail',
-      { id: id, layout: nextUIState.layout },
-      {},
-      replace
-    );
-  }
+	public onAfterRendering(): void {
+		this.setStickyProperties();
+	}
 
-  private onSearch(event: UI5Event) {
-    const query = event.getParameter('query') as string;
-    let tableSearchState: Array<Filter> = [];
+	private onMasterMatched() {
+		(this.getModel('appView') as JSONModel).setProperty('/layout', 'OneColumn');
+	}
 
-    if (query && query.length > 0) {
-      tableSearchState = [new Filter('Name', FilterOperator.Contains, query)];
-    }
+	private async onListItemPress(event: UI5Event): Promise<void> {
+		const replace = !system.phone,
+			id = (event.getSource() as CustomListItem)
+				.getBindingContext()
+				.getProperty('ID') as number,
+			helper = await (this.getOwnerComponent() as Component).getHelper(),
+			nextUIState = helper.getNextUIState(1) as UIState;
+		this.getRouter().navTo(
+			'detail',
+			{ id: id, layout: nextUIState.layout },
+			{},
+			replace
+		);
+	}
 
-    (
-      (this.getView().byId('productsTable') as List).getBinding(
-        'items'
-      ) as ODataListBinding
-    ).filter(tableSearchState, 'Application');
-  }
+	private onSearch(event: UI5Event) {
+		const query = event.getParameter('query') as string;
+		let tableSearchState: Array<Filter> = [];
 
-  private onSort(event: UI5Event) {
-    this.descendingSort = !this.descendingSort;
-    const view = this.getView(),
-      table = view.byId('productsTable') as List,
-      binding = table.getBinding('items') as ODataListBinding,
-      sorter = new Sorter('ID', this.descendingSort);
+		if (query && query.length > 0) {
+			tableSearchState = [new Filter('Name', FilterOperator.Contains, query)];
+		}
 
-    binding.sort(sorter);
-  }
+		(
+			(this.getView().byId('productsTable') as List).getBinding(
+				'items'
+			) as ODataListBinding
+		).filter(tableSearchState, 'Application');
+	}
 
-  public dataReceived(event: UI5Event & UI5Data): void {
-    const data = event.getParameter('data');
-    const productsTotal = data.results.length;
+	private onSort(event: UI5Event) {
+		this.descendingSort = !this.descendingSort;
+		const view = this.getView(),
+			table = view.byId('productsTable') as List,
+			binding = table.getBinding('items') as ODataListBinding,
+			sorter = new Sorter('ID', this.descendingSort);
 
-    const view = this.getView().byId('productsTotal') as Text;
-    view.setText(`Products(${productsTotal})`);
+		binding.sort(sorter);
+	}
 
-    const dataResults = data.results;
-    // let currency;
-    // if (dataResults.ID >= 5) {
-    //   currency = "USD";
-    // }
-    // const currency = 'PHP';
+	public dataReceived(event: UI5Event & UI5Data): void {
+		const data = event.getParameter('data');
+		const productsTotal = data.results.length;
 
-    // const objectNumberView = this.getView().byId(
-    //   'ObjectNumberPrice'
-    // ) as ObjectNumber;
-    // console.log(objectNumberView);
-    // objectNumberView.setUnit(`${currency}`);
-  }
+		const view = this.getView().byId('productsTotal') as Text;
+		view.setText(`Products(${productsTotal})`);
+
+		const dataResults = data.results;
+		// let currency;
+		// if (dataResults.ID >= 5) {
+		//   currency = "USD";
+		// }
+		// const currency = 'PHP';
+
+		// const objectNumberView = this.getView().byId(
+		//   'ObjectNumberPrice'
+		// ) as ObjectNumber;
+		// console.log(objectNumberView);
+		// objectNumberView.setUnit(`${currency}`);
+	}
+
+	public async onCreateProduct(): Promise<void> {
+		const replace = !system.phone;
+		const helper = await (this.getOwnerComponent() as Component).getHelper(),
+			nextUIState = helper.getNextUIState(2) as UIState;
+		this.getRouter().navTo(
+			'createProduct',
+			{ layout: nextUIState.layout },
+			{},
+			replace
+		);
+	}
+
+	private setStickyProperties(): void {
+		(this.byId('productsTable') as Table).setSticky([
+			'ColumnHeaders',
+			'HeaderToolbar',
+		]);
+	}
 }

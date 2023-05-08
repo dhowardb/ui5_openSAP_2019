@@ -8,152 +8,243 @@ import { system } from 'sap/ui/Device';
 import Button from 'sap/m/Button';
 import Component, { UIState } from '../Component';
 import ListItem from 'sap/ui/core/ListItem';
+import UIHandler from '../UIControls/UIHandler';
+import MessageToast from 'sap/m/MessageToast';
+import IconTabFilter from 'sap/m/IconTabFilter';
+import ToolbarSpacer from 'sap/m/ToolbarSpacer';
+import FlexBox from 'sap/m/FlexBox';
+import DragDropBase from 'sap/ui/core/dnd/DragDropBase';
+import Metadata from 'sap/ui/base/Metadata';
+import DropInfo from 'sap/ui/core/dnd/DropInfo';
 
 /**
  * @namespace com.myorg.myapp.controller
  */
-export default class Detail extends BaseController {
-  private id: string;
-  private formatter = formatter;
-  public onInit(): void {
-    const viewModel = new JSONModel({
-      busy: false,
-      delay: 0,
-    });
-    this.setModel(viewModel, 'detailView');
 
-    this.getRouter()
-      .getRoute('detail')
-      .attachPatternMatched(
-        (event: UI5Event) => this.onObjectMatched(event),
-        this
-      );
+interface IdragAndDrop {
+	key: string;
+}
 
-    this.getRouter()
-      .getRoute('third')
-      .attachPatternMatched(
-        (event: UI5Event) => this.onObjectMatched(event),
-        this
-      );
-  }
+export default class Detail extends BaseController implements IdragAndDrop {
+	key = 'dragAndDropTab';
 
-  private onObjectMatched(event: UI5Event): void {
-    const viewModel = this.getModel('detailView') as JSONModel;
+	private id: string;
+	private formatter = formatter;
+	public onInit(): void {
+		const viewModel = new JSONModel({
+			busy: false,
+			delay: 0,
+		});
+		this.setModel(viewModel, 'detailView');
 
-    this.id =
-      (event.getParameter('arguments') as inputParameters).id || this.id || '0';
+		this.getRouter()
+			.getRoute('detail')
+			.attachPatternMatched(
+				(event: UI5Event) => this.onObjectMatched(event),
+				this
+			);
 
-    if (!this.id) {
-      return;
-    }
-    if (event.getParameter('name') === 'object') {
-      (this.getModel('appView') as JSONModel).setProperty(
-        '/layout',
-        // 'TwoColumnsMidExpanded'
-        'ThreeColumnsMidExpanded'
-      );
-    }
+		this.getRouter()
+			.getRoute('third')
+			.attachPatternMatched(
+				(event: UI5Event) => this.onObjectMatched(event),
+				this
+			);
+	}
 
-    void (this.getModel() as ODataModel).metadataLoaded().then(() => {
-      const path = (this.getModel() as ODataModel).createKey('/Products', {
-        ID: this.id,
-      });
+	public onTabSelect(event: UI5Event) {
+		const iconTabFilter = event.getParameter('item') as IconTabFilter;
+		const controls = iconTabFilter.getContent(); //not needed since list is not to be updated
 
-      this.getView().bindElement({
-        path: path,
-        events: {
-          change: () => this.onBindingChange(),
-          dataRequested: () => {
-            viewModel.setProperty('/busy', true);
-          },
-          dataReceived: function () {
-            viewModel.setProperty('/busy', false);
-          },
-        },
-      });
-    });
-  }
+		const toolBarSpacerConfig = this.getView().byId(
+			'toolbarSpacerButtonConfig'
+		) as ToolbarSpacer;
 
-  private onBindingChange() {
-    const elementBinding = this.getView().getElementBinding();
-    // No data for the binding
-    if (!elementBinding.getBoundContext()) {
-      void this.getRouter().getTargets().display('detailObjectNotFound');
-    }
-  }
+		const flexBoxConfig = this.getView().byId('flexBoxDroppable') as FlexBox;
 
-  public onCloseDetailPress(): void {
-    (this.getModel('appView') as JSONModel).setProperty(
-      '/actionButtonsInfo/midColumn/fullScreen',
-      false
-    );
-    this.getRouter().navTo('master');
-  }
+		toolBarSpacerConfig.setVisible(true);
+		flexBoxConfig.setWidth('');
 
-  public handleFullScreen(): void {
-    const nextLayout = (this.getModel('appView') as JSONModel).getProperty(
-      '/actionButtonsInfo/midColumn/fullScreen'
-    ) as string;
-    this.getRouter().navTo('detail', { layout: nextLayout, id: this.id });
-  }
+		this.setAllNonDroppableButtonsVisible();
+		this.setAllDroppableButtonsNotVisible();
 
-  public handleExitFullScreen(): void {
-    const nextLayout = (this.getModel('appView') as JSONModel).getProperty(
-      '/actionButtonsInfo/midColumn/exitFullScreen'
-    ) as string;
-    this.getRouter().navTo('detail', { layout: nextLayout, id: this.id });
-  }
+		if (iconTabFilter.getKey() !== this.key) {
+			//If not drag and drop
+			return;
+		}
 
-  public handleClose(): void {
-    const nextLayout = (this.getModel('appView') as JSONModel).getProperty(
-      '/actionButtonsInfo/midColumn/closeColumn'
-    ) as string;
-    this.getRouter().navTo('master', { layout: nextLayout });
-  }
+		this.setAllNonDroppableButtonsNotVisible();
+		this.setAllDroppableButtonsVisible();
 
-  //Additional
-  private async onShowCategories(event: UI5Event): Promise<void> {
-    const replace = !system.phone;
-    const id = (event.getSource() as Button)
-      .getBindingContext()
-      .getProperty('ID') as number;
-    const helper = await (this.getOwnerComponent() as Component).getHelper();
-    const nextUIState = helper.getNextUIState(2) as UIState;
-    this.getRouter().navTo(
-      'third',
-      { id: id, layout: nextUIState.layout },
-      {},
-      replace
-    );
-  }
+		//set toolbar spacer to false
+		toolBarSpacerConfig.setVisible(false);
+		flexBoxConfig.setJustifyContent('Center').setWidth('100%');
+	}
 
-  private async onListCategoriesHandler(event: UI5Event): Promise<void> {
-    const replace = !system.phone;
-    const id = (event.getSource() as ListItem)
-      .getBindingContext()
-      .getProperty('ID') as number;
+	private onObjectMatched(event: UI5Event): void {
+		const viewModel = this.getModel('detailView') as JSONModel;
 
-    const context = (event.getSource() as ListItem).getBindingContext();
-    const newID = context.getProperty('ID') as number;
+		this.id =
+			(event.getParameter('arguments') as inputParameters).id || this.id || '0';
 
-    const context2 = this.getView()
-      .byId('objAttrCategoryID')
-      .getBindingContext();
-    const newID2 = context.getProperty('ID') as number;
+		if (!this.id) {
+			return;
+		}
+		if (event.getParameter('name') === 'object') {
+			(this.getModel('appView') as JSONModel).setProperty(
+				'/layout',
+				// 'TwoColumnsMidExpanded'
+				'ThreeColumnsMidExpanded'
+			);
+		}
 
-    console.log(context2);
-    console.log(newID2);
+		void (this.getModel() as ODataModel).metadataLoaded().then(() => {
+			const path = (this.getModel() as ODataModel).createKey('/Products', {
+				ID: this.id,
+			});
 
-    console.log(event);
-    console.log(context);
-    console.log(newID);
-    const helper = await (this.getOwnerComponent() as Component).getHelper();
-    const nextUIState = helper.getNextUIState(2) as UIState;
-    this.getRouter().navTo(
-      'third',
-      { id: id, layout: nextUIState.layout },
-      {},
-      replace
-    );
-  }
+			this.getView().bindElement({
+				path: path,
+				events: {
+					change: () => this.onBindingChange(),
+					dataRequested: () => {
+						viewModel.setProperty('/busy', true);
+					},
+					dataReceived: function () {
+						viewModel.setProperty('/busy', false);
+					},
+				},
+			});
+		});
+	}
+
+	private onBindingChange() {
+		const elementBinding = this.getView().getElementBinding();
+		// No data for the binding
+		if (!elementBinding.getBoundContext()) {
+			void this.getRouter().getTargets().display('detailObjectNotFound');
+		}
+	}
+
+	public onCloseDetailPress(): void {
+		(this.getModel('appView') as JSONModel).setProperty(
+			'/actionButtonsInfo/midColumn/fullScreen',
+			false
+		);
+		this.getRouter().navTo('master');
+	}
+
+	public handleFullScreen(): void {
+		// const nextLayout = (this.getModel('appView') as JSONModel).getProperty(
+		// 	'/actionButtonsInfo/midColumn/fullScreen'
+		// ) as string;
+		// this.getRouter().navTo('detail', { layout: nextLayout, id: this.id });
+		const uiHandler = new UIHandler();
+		uiHandler.screenHandler.call(
+			this,
+			this.id,
+			'/actionButtonsInfo/midColumn/fullScreen',
+			'detail'
+		);
+	}
+
+	public handleExitFullScreen(): void {
+		// const nextLayout = (this.getModel('appView') as JSONModel).getProperty(
+		// 	'/actionButtonsInfo/midColumn/exitFullScreen'
+		// ) as string;
+		// this.getRouter().navTo('detail', { layout: nextLayout, id: this.id });
+		const uiHandler = new UIHandler();
+		uiHandler.screenHandler.call(
+			this,
+			this.id,
+			'/actionButtonsInfo/midColumn/exitFullScreen',
+			'detail'
+		);
+	}
+
+	public handleClose(): void {
+		const nextLayout = (this.getModel('appView') as JSONModel).getProperty(
+			'/actionButtonsInfo/midColumn/closeColumn'
+		) as string;
+		this.getRouter().navTo('master', { layout: nextLayout });
+
+		// const uiHandler = new UIHandler();
+		// uiHandler.screenHandler.call(
+		// 	this,
+		// 	this.id,
+		// 	'/actionButtonsInfo/midColumn/closeColumn',
+		// 	'detail'
+		// );
+	}
+
+	//Additional
+	private async onShowCategories(event: UI5Event): Promise<void> {
+		const replace = !system.phone;
+		const id = (event.getSource() as Button)
+			.getBindingContext()
+			.getProperty('ID') as number;
+		const helper = await (this.getOwnerComponent() as Component).getHelper();
+		const nextUIState = helper.getNextUIState(2) as UIState;
+		this.getRouter().navTo(
+			'third',
+			{ id: id, layout: nextUIState.layout },
+			{},
+			replace
+		);
+	}
+
+	private async onListCategoriesHandler(event: UI5Event): Promise<void> {
+		const replace = !system.phone;
+		const id = (event.getSource() as ListItem)
+			.getBindingContext()
+			.getProperty('ID') as number;
+
+		const context = (event.getSource() as ListItem).getBindingContext();
+		const newID = context.getProperty('ID') as number;
+
+		const context2 = this.getView()
+			.byId('objAttrCategoryID')
+			.getBindingContext();
+		const newID2 = context.getProperty('ID') as number;
+		const helper = await (this.getOwnerComponent() as Component).getHelper();
+		const nextUIState = helper.getNextUIState(2) as UIState;
+		this.getRouter().navTo(
+			'third',
+			{ id: id, layout: nextUIState.layout },
+			{},
+			replace
+		);
+	}
+
+	private onDelete() {
+		MessageToast.show('Drag and drop triggered! Deleting...');
+	}
+
+	private onDrop() {
+		MessageToast.show('Drag and drop triggered! Drop...');
+	}
+
+	private setAllDroppableButtonsNotVisible() {
+		(this.getView().byId('droppableButton') as Button).setVisible(false);
+		(this.getView().byId('droppableDeleteButton') as Button).setVisible(false);
+	}
+
+	private setAllDroppableButtonsVisible() {
+		(this.getView().byId('droppableButton') as Button).setVisible(true);
+		(this.getView().byId('droppableDeleteButton') as Button).setVisible(true);
+	}
+
+	private setAllNonDroppableButtonsNotVisible() {
+		(this.getView().byId('buttonAccept') as Button).setVisible(false);
+		(this.getView().byId('buttonReject') as Button).setVisible(false);
+		(this.getView().byId('buttonBack') as Button).setVisible(false);
+		(this.getView().byId('buttonWarning') as Button).setVisible(false);
+	}
+
+	private setAllNonDroppableButtonsVisible() {
+		(this.getView().byId('buttonAccept') as Button).setVisible(true);
+		(this.getView().byId('buttonReject') as Button).setVisible(true);
+		(this.getView().byId('buttonBack') as Button).setVisible(true);
+		(this.getView().byId('buttonWarning') as Button).setVisible(true);
+	}
 }

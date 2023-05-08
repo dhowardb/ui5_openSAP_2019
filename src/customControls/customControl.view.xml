@@ -1,0 +1,12 @@
+<mvc:XMLView controllerName="com.myorg.myapp.customControls.customControlFragment" xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc">
+    <VBox>
+        <items>
+            <Input value="Press Enter.. to go to comment sample" submit="onInputHandler" />
+            <Toolbar>
+                <ToolbarSpacer />
+                <Button text="Show Dialog" type="Emphasized" press="onOpenDialogHandler" ariaHasPopup="Dialog" />
+                <Button text="Show Dialog via JS" type="Emphasized" press="onOpenDialogViaJS" ariaHasPopup="Dialog" />
+            </Toolbar>
+        </items>
+    </VBox>
+</mvc:XMLView>

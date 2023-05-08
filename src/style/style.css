@@ -1,12 +1,20 @@
 .objectListBgdToTest .sapMObjLItem {
-  background-color: transparent;
+	background-color: transparent;
 }
 
 .objectListBgdToNone {
-  background-color: transparent;
-  /* @extend .sapMLIB .sapMObjLItem; */
+	background-color: transparent;
+	/* @extend .sapMLIB .sapMObjLItem; */
 }
 
 .sapMLIB .sapMObjLItem {
-  composes: objectListBgdToNone;
+	composes: objectListBgdToNone;
+}
+
+.customDialog {
+	/* align-items: center; */
+}
+
+.customBackdrop {
+	/* align-items: center; */
 }

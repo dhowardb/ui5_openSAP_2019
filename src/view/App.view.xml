@@ -1,6 +1,6 @@
 <mvc:View controllerName="com.myorg.myapp.controller.App" displayBlock="true" height="100%" xmlns="sap.m" xmlns:f="sap.f" xmlns:mvc="sap.ui.core.mvc">
     <Shell>
-        <App id="app" busy="{appView>/busy}" busyIndicatorDelay="{appView>/delay}">
+        <App id="app" busy="{appView>/busy}" busyIndicatorDelay="{appView>/delay}">        
             <f:FlexibleColumnLayout id="fcl" layout="{appView>/layout}" stateChange=".onStateChanged" backgroundDesign="Translucent" />
         </App>
     </Shell>

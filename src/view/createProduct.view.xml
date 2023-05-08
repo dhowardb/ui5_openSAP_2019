@@ -1,0 +1,63 @@
+
+<mvc:View xmlns:tnt="sap.tnt" xmlns:f="sap.f" xmlns:form="sap.ui.layout.form" controllerName="com.myorg.myapp.controller.createProduct" xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc">
+    <Toolbar>
+        <Button type="Back" press="onBackCreateHandler" />
+        <ToolbarSpacer />
+        <Button icon="sap-icon://decline" press="onCloseCreateHandler" />
+    </Toolbar>
+    <form:Form id="createProductForm" editable="true">
+        <form:title>
+            <core:Title text="Create a Product" />
+        </form:title>
+        <form:layout>
+            <form:ResponsiveGridLayout labelSpanXL="3" labelSpanL="3" labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false" />
+        </form:layout>
+        <form:formContainers>
+            <form:FormContainer>
+                <form:formElements>
+                    <form:FormElement>
+                        <Label text="Enter Product ID" required="true" labelFor="createProductID" />
+                        <Input id="createProductID" value="" type="Number" required="false" change="onChangeProductID" />
+                    </form:FormElement>
+
+                    <form:FormElement>
+                        <Label text="Enter Product Name" required="false" labelFor="createProductName" />
+                        <Input id="createProductName" value="" type="Text" required="false" />
+                    </form:FormElement>
+
+                    <form:FormElement>
+                        <Label text="Enter Released Date" required="true" labelFor="createProductReleasedDate"/>
+                        <DatePicker id="createProductReleasedDate" required="false" change="onChangeDate" displayFormat="long" />
+                    </form:FormElement>
+
+                    <form:FormElement>
+                        <Label text="Rating" required="true" labelFor="createComboBoxRating" />
+                        <ComboBox id="createComboBoxRating" change="onChangeProductRating" loadItems="onLoadItemsHandler" required="false" />
+                    </form:FormElement>
+
+                    <form:FormElement>
+                        <Label text="Price" required="true" labelFor="createProductPrice"/>
+                        <Input id="createProductPrice" type="Number" required="false" change="onChangePriceHandler" />
+                    </form:FormElement>
+
+                    <form:FormElement>                        
+                        <Toolbar class="sapUiSmallMarginTop">
+                            <OverflowToolbar >
+                                <Button id="messagePopoverButton"
+                                        visible="false"
+                                        icon="{ path: '/', formatter: '.buttonIconFormatter' }"
+                                        type="{ path: '/', formatter: '.buttonTypeFormatter' }"
+                                        text= "{path: '/', formatter: '.highestSeverityMessages' }"
+                                        press=".messagePopoverPressHandler"
+                                        ariaHasPopup="Dialog"/>
+                             </OverflowToolbar>
+                            <ToolbarSpacer />
+                            <Button id="createProductButton" text="Create" type="Emphasized" press="onCreateProductHandler" enabled="{submitEnabled>/submitStatus}" />
+                            <Button text="Cancel" type="Default" press="onCloseCreateHandler" />
+                        </Toolbar>
+                    </form:FormElement>
+                </form:formElements>
+            </form:FormContainer>
+        </form:formContainers>
+    </form:Form>
+</mvc:View>

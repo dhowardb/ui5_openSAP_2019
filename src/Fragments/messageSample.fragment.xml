@@ -1,0 +1,13 @@
+<core:FragmentDefinition id="messageView" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:form="sap.ui.layout.form">
+    <VBox justifyContent="Center" alignContent="Center">
+        <items>
+            <!-- <Input value="Sample Input" change="onInputHandler" class="sapUiSmallMarginTop sapUiSmallMarginBegin sapUiSmallMarginEnd" /> -->
+            <TextArea value="Sample Comment..." class="sapUiSmallMarginBegin sapUiSmallMarginEnd" width="20rem" />
+            <Toolbar width="auto">
+                <ToolbarSpacer />
+                <Button text="Submit" type="Emphasized" ariaHasPopup="Dialog" />
+                <Button text="Cancel" type="Default" press="onPressCancel" />
+            </Toolbar>
+        </items>
+    </VBox>
+</core:FragmentDefinition>

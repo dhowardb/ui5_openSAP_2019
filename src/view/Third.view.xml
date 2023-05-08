@@ -1,4 +1,4 @@
-<mvc:View xmlns:f="sap.f" controllerName="com.myorg.myapp.controller.Third" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout">
+<mvc:View xmlns:f="sap.f" controllerName="com.myorg.myapp.controller.Third" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core">
     <f:DynamicPage>
         <f:title>
             <f:DynamicPageTitle>
@@ -12,6 +12,13 @@
                 </f:navigationActions>
             </f:DynamicPageTitle>
         </f:title>
+        <f:header>
+            <f:DynamicPageHeader>
+                <f:content>
+                    <mvc:XMLView viewName="com.myorg.myapp.customControls.customControl" type="XML" />
+                </f:content>
+            </f:DynamicPageHeader>
+        </f:header>
         <f:content>
             <!-- <Table
                 id="categoryTable"

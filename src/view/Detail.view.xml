@@ -1,5 +1,5 @@
-<mvc:View xmlns:smarttable="sap.ui.comp.smarttable" controllerName="com.myorg.myapp.controller.Detail" xmlns="sap.m" xmlns:t="sap.ui.table" xmlns:f="sap.f" xmlns:form="sap.ui.layout.form" xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc">
-    <f:DynamicPage id="detailPage" showFooter="{comp>/detailEditMode}" stickySubheaderProvider="iconTabBar" class="sapUiNoContentPadding" busy="{detailView>/busy}" busyIndicatorDelay="{detailView>/delay}">
+<mvc:View xmlns:dnd="sap.ui.core.dnd" xmlns:smarttable="sap.ui.comp.smarttable" controllerName="com.myorg.myapp.controller.Detail" xmlns="sap.m" xmlns:t="sap.ui.table" xmlns:f="sap.f" xmlns:form="sap.ui.layout.form" xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:customControls="com.myorg.myapp.customControls">
+    <f:DynamicPage id="detailPage" showFooter="true" stickySubheaderProvider="iconTabBar" class="sapUiNoContentPadding" busy="{detailView>/busy}" busyIndicatorDelay="{detailView>/delay}">
         <f:title>
             <f:DynamicPageTitle>
                 <f:heading>
@@ -36,7 +36,7 @@
             </f:DynamicPageHeader>
         </f:header>
         <f:content>
-            <IconTabBar id="iconTabBar" expanded="{device>/isNoPhone}" class="sapUiResponsiveContentPadding">
+            <IconTabBar id="iconTabBar" expanded="{device>/isNoPhone}" class="sapUiResponsiveContentPadding" select="onTabSelect">
                 <items>
                     <IconTabFilter text="Supplier" key="tab1">
                         <core:Fragment fragmentName='com.myorg.myapp.Fragments.SupplierInfo' type="XML" />
@@ -58,13 +58,96 @@
                             </markers>
                         </ObjectListItem>
                     </IconTabFilter>
+                    <IconTabFilter text="Product(DragDrop)" key="dragAndDropTab" id="iconTabFilterDragAndDrop" >
+                        <List noDataText="Drop List Items here" 
+                              id="dragDropList" 
+                              items="{/Products}">
+                            <dragDropConfig>
+                                <dnd:DragDropInfo sourceAggregation="items"></dnd:DragDropInfo>
+                            </dragDropConfig>
+                            <items>
+                                <StandardListItem type="Inactive" description="{Name}" title="{ID}" />
+                            </items>
+                        </List>
+                        <!-- <Table
+                            id="productsTableFooter"
+                            inset="false"
+                            items="{
+                                    path: '/Products',
+                                    events: { dataReceived : '.dataReceived' },
+                                    parameters: {
+                                        expand: 'Category,Supplier'
+                                    },
+                                    sorter: {
+                                        path: 'ID'
+                                    }
+                                }"
+                            class="sapFDynamicPageAlignContent"
+                            width="auto"
+                            busyIndicatorDelay="0"
+                        >
+                            <headerToolbar>
+                                <OverflowToolbar>
+                                    <ToolbarSpacer />
+                                    <SearchField search="onSearch" width="17.5rem" />
+                                    <OverflowToolbarButton icon="sap-icon://sort" type="Transparent" press="onSort" />
+                                    <Button icon="sap-icon://add" press="onCreateProduct" />
+                                </OverflowToolbar>
+                            </headerToolbar>
+                            <columns>
+                                <Column width="12em" demandPopin="true" minScreenWidth="Phone">
+                                    <Text id="productsTotal" text="Products {$count}" />
+                               </Column>
+                                <Column width="12em" demandPopin="false" minScreenWidth="Tablet">
+                                    <Text text="{i18n>masterDescription}" />
+                                </Column>
+                                <Column width="15em" demandPopin="false" minScreenWidth="Tablet">
+                                    <Text text="{i18n>categoryInfo}" />
+                                </Column>
+                                <Column hAlign="End" demandPopin="true" minScreenWidth="Phone">
+                                    <Text text="{i18n>masterPrice}" />
+                                </Column>
+                            </columns>
+
+                            <items>
+                                <ColumnListItem type="Navigation" press=".onListItemPress">
+                                    <cells>
+                                        <ObjectIdentifier title="{Name}" text="{ID}" />
+                                        <ObjectIdentifier text="{Description}" />
+                                        <core:Fragment fragmentName='com.myorg.myapp.Fragments.CategoryInfo' type="XML" />
+                                        <ObjectNumber number="{Price}" unit="{
+                                            path: 'ID',
+                                            formatter: '.formatter.formatCurrency'
+                                        }" />
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table> -->
+                    </IconTabFilter>
                 </items>
             </IconTabBar>
         </f:content>
         <f:footer>
             <OverflowToolbar>
-                <Button icon="sap-icon://alert" text="{=${message>/}.length}" visible="{=${message>/}.length > 0}" type="Emphasized" press=".onMessagePopoverPress" />
-                <ToolbarSpacer />
+                <Button icon="sap-icon://alert" text="Warning" visible="{=${message>/}.length > 0}" type="Emphasized" press=".onMessagePopoverPress" id="buttonWarning" />
+                <ToolbarSpacer id="toolbarSpacerButtonConfig" visible="true"/>
+                <Button text="{i18n>footerAccept}" type="Accept" visible="true" id="buttonAccept"/>
+                <Button text="{i18n>footerReject}" type="Reject" visible="true" id="buttonReject"/>
+                <Button text="{i18n>footerBack}" type="Back" visible="true" id="buttonBack"/>
+                
+                <FlexBox id="flexBoxDroppable" >
+                    <customControls:dragAndDropButton text="Droppable" type="Neutral" droppable="true" id="droppableButton" visible="false">
+                    <customControls:dragDropConfig>
+                        <dnd:DropInfo drop=".onDrop"/>
+                    </customControls:dragDropConfig>
+                </customControls:dragAndDropButton>
+
+                <customControls:dragAndDropButton icon="sap-icon://delete" droppable="true" id="droppableDeleteButton" visible="false">
+                    <customControls:dragDropConfig>
+                        <dnd:DropInfo drop=".onDelete"/>
+                    </customControls:dragDropConfig>
+                </customControls:dragAndDropButton>
+                </FlexBox>
             </OverflowToolbar>
         </f:footer>
     </f:DynamicPage>
